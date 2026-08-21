@@ -104,8 +104,8 @@ At a high level:
             │ Read Model   │
             └──────────────┘
 
-# 🏗️ Architecture
-#Architecture Overview
+# **🏗️ Architecture**
+**Architecture Overview**
 
 The project separates command and query responsibilities and connects the two sides asynchronously through Apache Kafka.
 
