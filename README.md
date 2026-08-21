@@ -1,5 +1,3 @@
----
-
 # 🎯 Social Media Post Microservices
 
 ### CQRS • Event Sourcing • Event-Driven Architecture • Apache Kafka • MongoDB • SQL Server
@@ -7,8 +5,6 @@
 An event-driven Social Media Post backend built with C#, ASP.NET Core, CQRS, Event Sourcing, Apache Kafka, MongoDB, SQL Server, Entity Framework Core, and the Mediator/Dispatcher pattern.
 
 > 🚧 Project status: learning/reference implementation — evolving incrementally. Not production-ready.
-
----
 
 ## 📑 Table of Contents
 
@@ -343,15 +339,227 @@ The CQRS-ES/CQRS.Core project provides reusable abstractions for Commands, Queri
 
 ---
 
-## 🎨 Architecture Assets
+## 🎨 Architecture Assets & Visuals
 
-Editable diagrams and supporting setup notes live in the Assets/ folder:
-- Architecture Overview.drawio / Architecture Overview.png
-- Kafka Architecture.drawio
-- Apache Kafka Producer.drawio
-- Apache Kafka Consumer (.NET).drawio
-- Mediator Pattern.drawio
-- docker-compose (1).yml
+The repository contains architecture diagrams, Docker orchestration, and setup notes under the Assets/ folder. Important assets are embedded or linked below to make the README visually rich and easier to follow.
+
+### Architecture Overview (visual)
+
+![Architecture Overview](Assets/Architecture%20Overview.png)
+
+*Full-resolution diagram and the editable source are available in the Assets folder.*
+
+- Editable: [Architecture Overview.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Architecture+Overview.drawio>)
+- PNG: [Architecture Overview.png](</Users/abhinavkumar/sm-post-microservices/Assets/Architecture%20Overview.png>)
+
+---
+
+### Other diagrams (editable .drawio sources)
+
+- [Kafka Architecture.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Kafka+Architecture.drawio>)
+- [Apache Kafka Producer.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Apache+Kafka+Producer.drawio>)
+- [Apache Kafka Consumer (.NET).drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Apache+Kafka+Consumer+(.NET).drawio>)
+- [Mediator Pattern.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Mediator+Pattern.drawio>)
+- [Mediator - Command Dispatching.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Mediator+-+Command+Dispatching.drawio>)
+- [Mediator - Query Dispatching.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Mediator+-+Query+Dispatching.drawio>)
+
+---
+
+### Docker Compose (embedded)
+
+The repository provides a docker-compose used for local Kafka/Zookeeper development. Included here for convenience:
+
+```yaml
+version: "3.4"
+
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.9
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: docker.io/bitnami/kafka:3.5
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    restart: always
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+networks:
+  default:    
+    name: mydockernetwork
+    external: true
+```
+
+Editable compose file: [docker-compose (1).yml](</Users/abhinavkumar/sm-post-microservices/Assets/docker-compose%20(1).yml>)
+
+---
+
+### Helpful setup snippets (from Assets)
+
+To keep the README concise while still providing the useful setup commands, the contents below are taken directly from the small helper files in Assets/. Use these as copy-paste-ready commands when setting up local development.
+
+<details>
+<summary>Installing Prerequisites (show/hide)</summary>
+
+```
+#1. .NET 6 SDK
+
+https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+
+#2. IDE or Code Editor
+
+VS Code:
+https://code.visualstudio.com/download
+
+Visual Studio Community Edition:
+https://visualstudio.microsoft.com/vs/community/
+
+Rider:
+https://www.jetbrains.com/rider/
+
+#4. VS Code Extensions
+
+C# for Visual Studio Code:
+https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
+
+NuGet Package Manager:
+https://marketplace.visualstudio.com/items?itemName=jmrog.vscode-nuget-package-manager
+
+SQL Server (mssql):
+https://marketplace.visualstudio.com/items?itemName=ms-mssql.mssql
+
+#5. Postman
+
+Download from:
+https://www.postman.com/downloads/
+
+#6. Docker
+
+Download for Mac or Windows:
+https://www.docker.com/products/docker-desktop
+
+Once installed, check Docker version:
+> docker --version
+
+#7. Create Docker Network - techbankNet 
+
+docker network create --attachable -d bridge mydockernetwork
+
+#8. Install or init docker compose 
+
+https://docs.docker.com/compose/install
+
+#9. Apache Kafka
+
+(Create docker-compose with zookeeper + kafka and run with `docker-compose up -d`)
+
+#9. MongoDB
+
+Run in Docker:
+docker run -it -d --name mongo-container \
+-p 27017:27017 --network mydockernetwork \
+--restart always \
+-v mongodb_data_container:/data/db \
+mongo:latest
+
+#9. Microsoft SQL Server
+
+Example:
+docker run -d --name sql-container \
+--network mydockernetwork \
+--restart always \
+-e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=$tr0ngS@P@ssw0rd02' -e 'MSSQL_PID=Express' \
+-p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest-ubuntu 
+```
+
+</details>
+
+<details>
+<summary>Run MongoDB in Docker (show/hide)</summary>
+
+```
+Run in Docker:
+ docker run -it -d --name mongo-container \
+ -p 27017:27017 --network mydockernetwork \
+ --restart always \
+ -v mongodb_data_container:/data/db \
+ mongo:latest
+
+Download Client Tools – Robo 3T:
+https://robomongo.org/download
+```
+
+</details>
+
+<details>
+<summary>Run SQL Server in Docker (show/hide)</summary>
+
+```
+docker run -d --name sql-container \
+--network mydockernetwork \
+--restart always \
+-e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=$tr0ngS@P@ssw0rd02' -e 'MSSQL_PID=Express' \
+-p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest-ubuntu 
+```
+
+</details>
+
+<details>
+<summary>Create SMUser SQL script (show/hide)</summary>
+
+```
+/* Change to the SocialMedia database */
+USE SocialMedia;
+GO
+
+/* Create user */
+IF NOT EXISTS(SELECT *
+FROM sys.server_principals
+WHERE name = 'SMUser')
+BEGIN
+	CREATE LOGIN SMUser WITH ******'SmPA$$06500', DEFAULT_DATABASE=SocialMedia
+END
+
+
+IF NOT EXISTS(SELECT *
+FROM sys.database_principals
+WHERE name = 'SMUser')
+BEGIN
+	EXEC sp_adduser 'SMUser', 'SMUser', 'db_owner';
+END
+```
+
+</details>
+
+---
+
+All of the above files remain available in the Assets/ folder. If you'd like, the next steps can be:
+- Commit this README update, or
+- Also embed other exported PNGs (if added), or
+- Generate a small gallery of thumbnails for each diagram.
+
 
 ---
 
