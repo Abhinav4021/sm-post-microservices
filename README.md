@@ -104,12 +104,21 @@ At a high level:
             │ Read Model   │
             └──────────────┘
 
-# **🏗️ Architecture**
+
+## 🏗️ Architecture
+
+<p align="center">
+  <img src="Assets/Architecture%20Overview.png" alt="Architecture Overview" width="850" />
+</p>
+
+### Architectural Responsibilities
+
 **Architecture Overview**
 
 The project separates command and query responsibilities and connects the two sides asynchronously through Apache Kafka.
 
 **Architecture Overview:**
+
 
 
 **Architectural Responsibilities:**
