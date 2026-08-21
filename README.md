@@ -109,8 +109,8 @@ At a high level:
 
 The project separates command and query responsibilities and connects the two sides asynchronously through Apache Kafka.
 
-**Editable source:**  
-[Architecture Overview — Draw.io](Assets/Architecture%20Overview.drawio)
+**Architecture Overview:**
+
 
 **Architectural Responsibilities:**
 **Command Side**
