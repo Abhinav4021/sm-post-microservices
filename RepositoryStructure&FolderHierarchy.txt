@@ -1,0 +1,52 @@
+sm-post-microservices/
+├── CQRS-ES/
+│   └── CQRS.Core/                      # Reusable core abstractions & framework
+│       ├── Commands/                   # BaseCommand abstraction
+│       ├── Events/                     # BaseEvent, EventModel (Event store schema)
+│       ├── Messages/                   # Message base class
+│       ├── Queries/                    # BaseQuery abstraction
+│       ├── Domain/                     # AggregateRoot base & IEventStore interface
+│       ├── Infrastructure/             # ICommandDispatcher, IQueryDispatcher, IEventProducer
+│       ├── Consumers/                  # IEventConsumer
+│       └── Exceptions/                 # ConcurrencyException, AggregateNotFoundException
+│
+├── SM-Post/
+│   ├── Post.Common/                    # Shared DTOs, Event Contracts & Responses
+│   │   ├── DTOs/                       # BaseResponse, NewPostResponse, etc.
+│   │   └── Events/                     # PostCreatedEvent, MessageUpdatedEvent, 
+│   │                                   # PostLikedEvent, CommentAddedEvent, etc.
+│   │
+│   ├── Post.Cmd/                       # WRITE SIDE (Command Handling & Event Sourcing)
+│   │   ├── Post.Cmd.Api/               # Web API endpoints, Commands, Dispatcher setup
+│   │   │   ├── Commands/               # NewPostCommand, EditMessageCommand, LikePostCommand, etc.
+│   │   │   ├── Controllers/            # NewPostController, EditMessageController, etc.
+│   │   │   └── DTOs/                   # Request/Response payloads
+│   │   ├── Post.Cmd.Domain/            # Domain Entities & Logic
+│   │   │   └── Aggregates/             # PostAggregate (State mutations & Business Rules)
+│   │   └── Post.Cmd.Infrastructure/    # Persistence & Messaging Implementations
+│   │       ├── Config/                 # MongoDbConfig
+│   │       ├── Dispatchers/            # CommandDispatcher
+│   │       ├── Handlers/               # ICommandHandler & EventSourcingHandler
+│   │       ├── Repositories/           # EventStoreRepository (MongoDB driver)
+│   │       ├── Stores/                 # EventStore implementation
+│   │       └── Producers/              # Kafka EventProducer implementation
+│   │
+│   └── Post.Query/                     # READ SIDE (Queries, Projections & Consumers)
+│       ├── Post.Query.Api/             # Web API endpoints for Read operations
+│       │   ├── Controllers/            # PostLookupController
+│       │   ├── Queries/                # FindAllPostsQuery, FindPostByIdQuery, etc.
+│       │   └── DTOs/                   # PostLookupResponse
+│       ├── Post.Query.Domain/          # Query Model Entities & Contracts
+│       │   ├── Entities/               # PostEntity, CommentEntity (Tabular schema)
+│       │   └── Repositories/           # IPostRepository, ICommentRepository
+│       └── Post.Query.Infrastructure/  # Read Database & Kafka Consumer
+│           ├── Consumers/              # EventConsumer (Kafka Consumer implementation)
+│           ├── Handlers/               # EventHandler (Maps Events -> SQL Entities)
+│           ├── DataAccess/             # DatabaseContext (EF Core DbContext for MSSQL)
+│           ├── Repositories/           # PostRepository, CommentRepository (EF Core)
+│           ├── Dispatchers/            # QueryDispatcher
+│           └── HostedServices/         # ConsumerHostedService (IHostedService background loop)
+│
+├── Docker/                             # Infrastructure provisioning scripts
+│   └── docker-compose.yml              # Kafka, Zookeeper, MongoDB, MSSQL containers
+└── README.md                           # Setup guides, requirements, and execution steps
