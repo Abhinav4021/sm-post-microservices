@@ -107,9 +107,7 @@ At a high level:
 
 ## 🏗️ Architecture
 
-<p align="center">
-  <img src="Assets/Architecture%20Overview.png" alt="Architecture Overview" width="850" />
-</p>
+![Architecture Overview](Assets/Architecture%20Overview.png)
 
 ### Architectural Responsibilities
 
