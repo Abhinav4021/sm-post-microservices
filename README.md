@@ -10,6 +10,7 @@ An event-driven Social Media Post backend built with C#, ASP.NET Core, CQRS, Eve
 
 - [🎯 Project Overview](#-project-overview)
 - [🏗️ Architecture](#️-architecture)
+- [🏗️ Architecture Overview (visual)](#architecture-overview-visual)
 - [🔄 End-to-End Flow](#-end-to-end-flow)
 - [🧠 CQRS](#-cqrs)
 - [📜 Event Sourcing](#-event-sourcing)
@@ -55,6 +56,12 @@ Instead of a single CRUD model, responsibilities are split:
 | SQL Server | Read model database populated by consumers |
 
 ## 🏗️ Architecture
+
+### Architecture Overview (visual)
+
+![Architecture Overview](Assets/Architecture%20Overview.png)
+
+*Full-resolution diagram and the editable source are available in the Assets folder.*
 
 High-level flow:
 
@@ -343,14 +350,7 @@ The CQRS-ES/CQRS.Core project provides reusable abstractions for Commands, Queri
 
 The repository contains architecture diagrams, Docker orchestration, and setup notes under the Assets/ folder. Important assets are embedded or linked below to make the README visually rich and easier to follow.
 
-### Architecture Overview (visual)
-
-![Architecture Overview](Assets/Architecture%20Overview.png)
-
-*Full-resolution diagram and the editable source are available in the Assets folder.*
-
-- Editable: [Architecture Overview.drawio](</Users/abhinavkumar/sm-post-microservices/Assets/Architecture+Overview.drawio>)
-- PNG: [Architecture Overview.png](</Users/abhinavkumar/sm-post-microservices/Assets/Architecture%20Overview.png>)
+- Architecture Overview.drawio / PNG (see Assets/ for editable source and the exported PNG)
 
 ---
 
